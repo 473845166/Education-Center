@@ -10,13 +10,6 @@
             name="viewport"/>
     <link rel="stylesheet" href="{% static 'app1/base/css/index.css' %}"/>
     <script src="{% static 'app1/base/js/vue.global.js' %}"></script>
-    <script type="importmap">
-      {
-        "imports": {
-          "vue": "{% static 'app1/base/js/vue.esm-browser.js' %}"
-        }
-      }
-    </script>
     <script src="{% static 'app1/base/js/vant.min.js' %}"></script>
     <link rel="stylesheet" href="{% static 'app1/css/style.css' %}">
     {% block more_head %}
@@ -34,8 +27,8 @@
     </div>
 </div>
 <script>var globalThis = window;</script>
-{% block js %}
-{% endblock js %}
-
+<script src="{% static 'app1/js/app.js' %}" type="module"></script>
+{% block js %}{% endblock js %}
+<script src="{% static 'app1/js/app2.js' %}" type="module"></script>
 </body>
 </html>

@@ -1,4 +1,4 @@
-import {createApp, ref} from "vue";
+const {createApp, ref} = Vue;
 const app = createApp({})
-app.use(vant)
-app.mount('#app',true)
+window.app= app
+
