@@ -1,4 +1,4 @@
-const {computed,ref,defineComponent} = Vue;
+const {computed, ref, defineComponent} = Vue;
 app.component('CounterOne0', defineComponent({
     props: ['index'],
     setup() {
@@ -12,17 +12,23 @@ app.component('CounterOne0', defineComponent({
             '0%': 'blue',
             '100%': 'red',
         };
+        const show = ref(false);
+
         const activeNames = ref(['1']);
         return {
             text,
             currentRate,
             images,
-            rate:70,
+            rate: 70,
             gradientColor,
             activeNames,
+            show,
         };
     },
     template: `<div class="te">
+<van-dialog v-model:show="show" title="标题" show-cancel-button>
+  <img src="https://fastly.jsdelivr.net/npm/@vant/assets/apple-3.jpeg" />
+</van-dialog>
     <div class="te_s1">
         <van-swipe class="my-swipe" :autoplay="3000" indicator-color="white" lazy-render>
     <van-swipe-item v-for="image in images" :key="image">
@@ -57,7 +63,7 @@ app.component('CounterOne0', defineComponent({
 <van-collapse v-model="activeNames">
   <van-collapse-item title="标题1" name="1">
     <p>代码是写出来给人看的，附带能在机器上运行。</p>
-    <van-button plain >朴素按钮</van-button>
+    <van-button @click="show ? !show : show" plain>朴素按钮</van-button>
         <van-button plain >朴素按钮</van-button>
             <van-button plain >朴素按钮</van-button>
                 <van-button plain >朴素按钮</van-button>
