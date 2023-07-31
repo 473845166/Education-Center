@@ -1,4 +1,7 @@
 {% load static %}
+<script type="module">
+    NProgress.start();
+</script>
 <!DOCTYPE html>
 <html lang="zh-cmn-Hans" id="htmlRoot" data-theme="light">
 <head>
@@ -11,24 +14,41 @@
     <link rel="stylesheet" href="{% static 'app1/base/css/index.css' %}"/>
     <script src="{% static 'app1/base/js/vue.global.js' %}"></script>
     <script src="{% static 'app1/base/js/vant.min.js' %}"></script>
+    <script src="{% static 'app1/nprogress/nprogress.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'app1/nprogress/nprogress.css' %}">
     <link rel="stylesheet" href="{% static 'app1/css/style.css' %}">
     {% block more_head %}
 
     {% endblock more_head %}
     <title>{% block title %}base{% endblock title %}</title>
+    {% block css %}{% endblock css %}
+
 </head>
 <body>
 <div id="appProvider" style="display: none"></div>
 <div id="app">
-    <div class="first-loading-wrap">
-        <div class="loading-wrap">
-            <span class="dot dot-spin"><i></i><i></i><i></i><i></i></span>
+    <Transition name="nested">
+        <div v-if="show" class="first-loading-wrap">
+            <div class="loading-wrap">
+                <span class="dot dot-spin"><i></i><i></i><i></i><i></i></span>
+            </div>
         </div>
-    </div>
+    </Transition>
+    <Transition name="nested">
+        <div v-if="!show">
+            {% block content %}
+                123
+            {% endblock content %}
+        </div>
+    </Transition>
 </div>
 <script>var globalThis = window;</script>
+{% block App %}{% endblock App %}
 <script src="{% static 'app1/js/app.js' %}" type="module"></script>
-{% block js %}{% endblock js %}
+{% block App2 %}{% endblock App2 %}
 <script src="{% static 'app1/js/app2.js' %}" type="module"></script>
 </body>
+<script type="module">
+    NProgress.done();
+</script>
 </html>

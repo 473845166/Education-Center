@@ -1,0 +1,44 @@
+.component{
+    width: 100%;
+}
+.te{
+    width: 100%;
+    margin-bottom: 10%;
+}
+.te_s1{
+    height: 25%;
+    margin-bottom: 5%;
+}
+.my-swipe .van-swipe-item {
+    color: #fff;
+    font-size: 20px;
+    line-height: 150px;
+    text-align: center;
+}
+img{
+    width: 100%;
+    height: 100%;
+}
+.ta_s2{
+    height: 70%;
+}
+.van-circle{
+    margin: 10px;
+}
+.van-doc-demo-block:first-of-type .van-doc-demo-block__title {
+     padding-top: 20px;
+}
+.van-doc-demo-block__title {
+     margin: 0;
+     padding: 32px 16px 16px;
+     color: #969799;
+     font-weight: 400;
+     font-size: 14px;
+     line-height: 16px;
+}
+.van-collapse-item{
+    padding: 10px;
+}
+.van-collapse-item .van-button{
+    margin: 10px;
+}

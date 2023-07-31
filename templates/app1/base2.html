@@ -1,6 +1,40 @@
 {% extends 'app1/base.html' %}
 {% load static %}
 {% block title %}欢迎{% endblock title %}
-{% block js %}
-    <script src="{% static 'app1/js/app.js' %}" type="module"></script>
-{% endblock js %}
+{% block css %}
+    <link rel="stylesheet" href="{% static 'app1/css/transition.css' %}">
+    <link rel="stylesheet" href="{% static 'app1/css/swipe.css' %}">
+{% endblock css %}
+{% block content %}
+    <div class="component">
+        <Transition name="nested">
+            <component :is="currentComponent" :index="index"/>
+        </Transition>
+    </div>
+    <van-tabbar v-model="active" @change="onChange">
+        <van-tabbar-item>
+            <span>立即预约</span>
+            <template #icon="props">
+                <img :src="props.active ? icon.active1 : icon.inactive1"/>
+            </template>
+        </van-tabbar-item>
+        <van-tabbar-item icon="search">
+            <span>历史预约</span>
+            <template #icon="props">
+                <img :src="props.active ? icon.active2 : icon.inactive2"/>
+            </template>
+        </van-tabbar-item>
+        <van-tabbar-item icon="setting-o">
+            <span>我的</span>
+            <template #icon="props">
+                <img :src="props.active ? icon.active3 : icon.inactive3"/>
+            </template>
+        </van-tabbar-item>
+    </van-tabbar>
+{% endblock content %}
+{% block App %}
+    <script src="{% static 'app1/js/base.js' %}" type="module"></script>
+{% endblock App %}
+{% block App2 %}
+    <script src="{% static 'app1/js/base2.js' %}" type="module"></script>
+{% endblock App2 %}
