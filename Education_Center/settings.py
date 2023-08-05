@@ -31,12 +31,14 @@ ALLOWED_HOSTS = ["*"]
 # Application definition
 
 INSTALLED_APPS = [
+    'simpleui',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'app1',
 ]
 
 MIDDLEWARE = [
@@ -76,8 +78,15 @@ WSGI_APPLICATION = 'Education_Center.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'education_center',
+        'USER': 'Education_Center',
+        'PASSWORD': 'ZiJJKk5CzMtxDpx8',
+        'HOST': '47.115.214.214',  # 默认为localhost
+        'PORT': '3306',  # 默认为3306
+        'OPTIONS': {
+            'charset': 'utf8mb4',
+        },
     }
 }
 
@@ -122,5 +131,7 @@ STATICFILES_DIRS = ['static/']
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
+
+AUTH_USER_MODEL = 'app1.CustomUser'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

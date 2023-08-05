@@ -31,6 +31,7 @@ const Main = {
             NProgress.start();
             this.currentComponent = `CounterOne${index}`
             this.index = index
+            console.log(this.currentComponent)
             NProgress.done();
         }
     }

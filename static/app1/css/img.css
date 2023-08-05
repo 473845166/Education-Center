@@ -1,0 +1,17 @@
+#head_min ,h2{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#head_min img {
+    max-height: 100px;
+    max-width: 300px;
+}
+
+#head_min2 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 16px;
+}

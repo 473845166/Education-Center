@@ -1,0 +1,75 @@
+{% extends 'app1/base.html' %}
+{% load static %}
+{% block title %}编辑信息{% endblock title %}
+{% block more_head %}
+    <link rel="stylesheet" href="{% static 'app1/css/img.css' %}">
+{% endblock more_head %}
+{% block div_app %}
+    <div id="app">
+        <div id="head_min"><img src="{% static 'app1/icon/编辑.png' %}" alt=""></div>
+        <h2 style="font-size: 0.3rem">如果第一次登录会自动弹出</h2>
+        <div id="head_min2">
+            <van-tag size="large" color="#7232dd" plain>修改信息</van-tag>
+        </div>
+        <van-form @submit="onSubmit">
+            <van-cell-group inset>
+                <van-field v-model="name" name="name" label="真实姓名" placeholder="真实姓名"
+                           :rules="[{ required: true, message: '请填写真实姓名' }]"/>
+            </van-cell-group>
+            <van-cell-group inset>
+                <van-field v-model="connect" name="connect" label="联系电话" placeholder="联系电话"
+                           :rules="[{ required: true, message: '请填写联系电话' }]"/>
+            </van-cell-group>
+            <van-cell-group inset>
+                <van-field v-model="unit" name="unit" label="单位" placeholder="单位"
+                           :rules="[{ required: true, message: '请填写联系方式' }]"/>
+            </van-cell-group>
+            <div style="margin: 16px;">
+                <van-button plain hairline type="success" native-type="submit">提交</van-button>
+            </div>
+        </van-form>
+        {% csrf_token %}
+    </div>
+{% endblock div_app %}
+{% block js %}
+    <script>
+        const csrftoken = document.getElementsByName('csrfmiddlewaretoken')[0].value
+        console.log(csrftoken)
+        // 在 #app 标签下渲染一个按钮组件
+        const app = Vue.createApp({
+            setup() {
+                const name = Vue.ref('');
+                const unit = Vue.ref('');
+                const connect = Vue.ref('');
+                const onSubmit = (values) => {
+                    axios({
+                        method: 'put',
+                        url: '',
+                        headers: {'X-CSRFToken': csrftoken},
+                        data: JSON.stringify(values)
+                    }).then(res => {
+                        if (res.data.code === 1) {
+                            console.log(res.data.code)
+                            location.href = "{% url 'user_index' %}"
+                        } else {
+                            alert('输入信息有误')
+                        }
+                    });
+                };
+                return {
+                    name,
+                    unit,
+                    connect,
+                    onSubmit,
+
+                };
+            },
+        });
+        app.use(vant);
+        app.mount('#app');
+
+        function wx_login() {
+            location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxd887f37fc78de511&redirect_uri=http://wen52.icu/wx&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect';
+        }
+    </script>
+{% endblock js %}

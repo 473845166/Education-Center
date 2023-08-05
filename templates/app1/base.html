@@ -8,45 +8,49 @@
     <meta charset="UTF-8">
     <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible"/>
     <meta content="webkit" name="renderer"/>
-    <meta
-            content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=0"
-            name="viewport"/>
+    <meta name="description" content="A lightweight, customizable Vue UI library for mobile web apps.">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, viewport-fit=cover">
+    <meta http-equiv="Cache-Control" content="no-cache">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <link rel="stylesheet" href="{% static 'app1/base/css/index.css' %}"/>
     <script src="{% static 'app1/base/js/vue.global.js' %}"></script>
     <script src="{% static 'app1/base/js/vant.min.js' %}"></script>
     <script src="{% static 'app1/nprogress/nprogress.js' %}"></script>
+    <script src="{% static 'app1/base/js/axios.min.js' %}"></script>
     <link rel="stylesheet" href="{% static 'app1/nprogress/nprogress.css' %}">
     <link rel="stylesheet" href="{% static 'app1/css/style.css' %}">
     {% block more_head %}
-
     {% endblock more_head %}
     <title>{% block title %}base{% endblock title %}</title>
     {% block css %}{% endblock css %}
-
 </head>
 <body>
 <div id="appProvider" style="display: none"></div>
-<div id="app">
-    <Transition name="nested">
-        <div v-if="show" class="first-loading-wrap">
-            <div class="loading-wrap">
-                <span class="dot dot-spin"><i></i><i></i><i></i><i></i></span>
+{% block div_app %}
+    <div id="app">
+        <Transition name="nested">
+            <div v-if="show" class="first-loading-wrap">
+                <div class="loading-wrap">
+                    <span class="dot dot-spin"><i></i><i></i><i></i><i></i></span>
+                </div>
             </div>
-        </div>
-    </Transition>
-    <Transition name="nested">
-        <div v-if="!show">
-            {% block content %}
-                123
-            {% endblock content %}
-        </div>
-    </Transition>
-</div>
+            <div v-else>
+                {% block content %}
+                    123
+                {% endblock content %}
+            </div>
+        </Transition>
+    </div>
+{% endblock div_app %}
 <script>var globalThis = window;</script>
-{% block App %}{% endblock App %}
-<script src="{% static 'app1/js/app.js' %}" type="module"></script>
-{% block App2 %}{% endblock App2 %}
-<script src="{% static 'app1/js/app2.js' %}" type="module"></script>
+{% block js %}
+    {% block App %}{% endblock App %}
+    <script src="{% static 'app1/js/app.js' %}" type="module"></script>
+    {% block App2 %}{% endblock App2 %}
+    <script src="{% static 'app1/js/app2.js' %}" type="module"></script>
+{% endblock js %}
 </body>
 <script type="module">
     NProgress.done();
