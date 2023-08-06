@@ -17,11 +17,11 @@
                            :rules="[{ required: true, message: '请填写真实姓名' }]"/>
             </van-cell-group>
             <van-cell-group inset>
-                <van-field v-model="connect" name="connect" label="联系电话" placeholder="联系电话"
+                <van-field v-model="telephone_number" name="telephone_number" label="联系电话" placeholder="联系电话"
                            :rules="[{ required: true, message: '请填写联系电话' }]"/>
             </van-cell-group>
             <van-cell-group inset>
-                <van-field v-model="unit" name="unit" label="单位" placeholder="单位"
+                <van-field v-model="company" name="company" label="单位" placeholder="单位"
                            :rules="[{ required: true, message: '请填写联系方式' }]"/>
             </van-cell-group>
             <div style="margin: 16px;">
@@ -39,8 +39,8 @@
         const app = Vue.createApp({
             setup() {
                 const name = Vue.ref('');
-                const unit = Vue.ref('');
-                const connect = Vue.ref('');
+                const company = Vue.ref('');
+                const telephone_number = Vue.ref('');
                 const onSubmit = (values) => {
                     axios({
                         method: 'put',
@@ -48,18 +48,13 @@
                         headers: {'X-CSRFToken': csrftoken},
                         data: JSON.stringify(values)
                     }).then(res => {
-                        if (res.data.code === 1) {
-                            console.log(res.data.code)
-                            location.href = "{% url 'user_index' %}"
-                        } else {
-                            alert('输入信息有误')
-                        }
+                        location.href = "{% url 'user_index' %}"
                     });
                 };
                 return {
                     name,
-                    unit,
-                    connect,
+                    company,
+                    telephone_number,
                     onSubmit,
 
                 };
@@ -67,9 +62,5 @@
         });
         app.use(vant);
         app.mount('#app');
-
-        function wx_login() {
-            location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxd887f37fc78de511&redirect_uri=http://wen52.icu/wx&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect';
-        }
     </script>
 {% endblock js %}

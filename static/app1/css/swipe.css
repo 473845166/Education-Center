@@ -79,3 +79,8 @@ img {
     line-height: var(--van-cell-line-height);
     background: var(--van-cell-background);
 }
+.van-cell-group{
+    width: 100%;
+    height: 100%;
+    margin: 0;
+}

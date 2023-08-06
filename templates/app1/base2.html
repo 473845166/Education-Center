@@ -33,6 +33,15 @@
     </van-tabbar>
 {% endblock content %}
 {% block App %}
+    <script>
+        window.sl = {{ sl|safe }};
+    </script>
+    <script>
+        window.record = {{ record|safe }};
+    </script>
+    <script>
+        window.my_info = {{ my_info|safe }};
+    </script>
     <script src="{% static 'app1/js/base.js' %}" type="module"></script>
 {% endblock App %}
 {% block App2 %}

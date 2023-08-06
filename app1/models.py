@@ -1,4 +1,5 @@
 from django.contrib.auth.models import AbstractUser
+from django.core.exceptions import ValidationError
 from django.db import models
 
 
@@ -10,7 +11,7 @@ class CustomUser(AbstractUser):
     wx = models.JSONField(verbose_name='微信公众号', blank=True, null=True)
     name = models.CharField(verbose_name='姓名', blank=True, null=True, max_length=255)
     company = models.CharField(verbose_name='公司单位', blank=True, null=True, max_length=255)
-    telephone_number = models.IntegerField(verbose_name='电话号码', blank=True, null=True)
+    telephone_number = models.CharField(verbose_name='电话号码', max_length=11,blank=True, null=True)
 
     def __str__(self):
         try:
@@ -30,6 +31,16 @@ class Reserve(models.Model):
     start_time = models.DateField(verbose_name='开始时间')
     end_time = models.DateField(verbose_name='结束时间')
 
+    #一个时间只能有一个事件
+    def clean(self):
+        overlapping_events = Reserve.objects.filter(
+            start_time__lte=self.end_time,
+            end_time__gte=self.start_time
+        ).exclude(pk=self.pk)
+
+        if overlapping_events.exists():
+            raise ValidationError("在此时间段内已经存在一个事件。")
+
     def __str__(self):
         return self.event
 
@@ -43,6 +54,7 @@ class Record(models.Model):
     reserve = models.ForeignKey(Reserve, on_delete=models.CASCADE, verbose_name='事件')
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, verbose_name='用户姓名')
     submit = models.DateTimeField(verbose_name='请求预约时间', auto_now_add=True)
+    status = models.BooleanField(verbose_name='已经取消',default=False,null=True,blank=True)
 
     def __str__(self):
         return '{}'.format(self.user, '参加的', self.reserve)

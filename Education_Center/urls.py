@@ -27,6 +27,8 @@ urlpatterns = [
     path('', views.index,name='user_index'),
     path('logout/', views.logout_view, name='logout'),
     path('up_data/', views.up_data, name='up_data'),
-    path('wx/', views.wx, name='wx'),
-    path('up_wx/', views.up_wx, name='up_wx'),
+    path('user_login/', views.user_login, name='user_login'),
+    path('seed_sms/', views.seed_sms, name='seed_sms'),
+    path('get_model/', views.get_model, name='get_model'),
+    path('get_record/', views.get_record, name='get_record'),
 ]
