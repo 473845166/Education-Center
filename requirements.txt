@@ -1,9 +1,15 @@
+aliyun-python-sdk-core==2.13.36
+aliyun-python-sdk-dysmsapi==2.1.2
 asgiref==3.7.2
 certifi==2023.7.22
+cffi==1.15.1
 charset-normalizer==3.2.0
+cryptography==41.0.3
 Django==4.2.3
 django-simpleui==2023.3.1
 idna==3.4
+jmespath==0.10.0
+pycparser==2.21
 PyMySQL==1.1.0
 requests==2.31.0
 sqlparse==0.4.4

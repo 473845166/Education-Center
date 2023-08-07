@@ -22,8 +22,6 @@ from app1 import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('MP_verify_qfjen1KPHwAKwhSV.txt',
-         TemplateView.as_view(template_name='MP_verify_qfjen1KPHwAKwhSV.txt', content_type='text/plain')),
     path('', views.index,name='user_index'),
     path('logout/', views.logout_view, name='logout'),
     path('up_data/', views.up_data, name='up_data'),

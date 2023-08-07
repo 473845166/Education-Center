@@ -56,6 +56,7 @@
             <van-cell-group inset>
                 <van-field
                         v-model="sms"
+                        name="sms"
                         center
                         clearable
                         label="短信验证码"
@@ -111,7 +112,7 @@
                             console.log(res.data.code)
                             location.href = "{% url 'user_index' %}"
                         } else {
-                            alert('输入信息有误')
+                            alert(res.data.mgs)
                         }
                     });
                 };
@@ -131,14 +132,14 @@
                 seed_sms() {
                     axios({
                         method: 'post',
-                        url: '/seed_sms/',
+                        url: '{% url 'seed_sms' %}',
                         headers: {'X-CSRFToken': csrftoken},
                         data: JSON.stringify({phone: this.phone})
                     }).then(res => {
                         if (res.data.code === '1') {
-                            vant.showNotify({ type: 'primary', message: '发送成功' });
+                            vant.showNotify({type: 'primary', message: '发送成功'});
                         } else {
-                            vant.showNotify({ type: 'danger', message: '发送失败' });
+                            vant.showNotify({type: 'danger', message: '发送失败'});
                         }
                     });
                 }

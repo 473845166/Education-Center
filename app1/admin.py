@@ -24,6 +24,11 @@ class AdminReserve(admin.ModelAdmin):
 @admin.register(Record)
 class AdminRecord(admin.ModelAdmin):
     list_display = [i.name for i in Record._meta.fields]
+    list_display.append('shi_')
+
+    @admin.display(description='预约时间段', ordering='id')
+    def shi_(self, obj):
+        return '{}至{}'.format(obj.openness.start_time, obj.openness.end_time)
 
 
 @admin.register(Openness)

@@ -20,6 +20,7 @@ const csrftoken = getCookie('csrftoken');
 app.component('CounterOne0', defineComponent({
     props: ['index'],
     setup() {
+
         const images = [
             'https://fastly.jsdelivr.net/npm/@vant/assets/apple-1.jpeg',
             'https://fastly.jsdelivr.net/npm/@vant/assets/apple-2.jpeg',
@@ -29,14 +30,16 @@ app.component('CounterOne0', defineComponent({
         const activeNames = ref();
         const checked = ref();
         const record = (pk) => {
-            show.value = true
+            show2.value = true
             axios({
                 method: 'post',
                 url: '/get_model/',
                 headers: {'X-CSRFToken': csrftoken},
                 data: JSON.stringify({'id': pk})
             }).then(res => {
-                rds.value = res.data
+                rds.value = res.data.data
+                company.value = res.data.company
+                digit.value = 50
             });
         }
         const submit = () => {
@@ -44,7 +47,7 @@ app.component('CounterOne0', defineComponent({
                 method: 'post',
                 url: '',
                 headers: {'X-CSRFToken': csrftoken},
-                data: JSON.stringify({'checked': checked.value})
+                data: JSON.stringify({'checked': checked.value, 'submit_date': submit_date.value,'digit':digit.value})
             }).then(res => {
                 vant.showDialog({
                     message: res.data.mgs,
@@ -64,6 +67,20 @@ app.component('CounterOne0', defineComponent({
             show.value = false
         }
         const rds = ref([])
+        const submit_date = ref()
+        const submit_time = ref()
+
+        const shi_duan = (value) => {
+            const formatDate = (date) => `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`;
+            // show.value = true
+            submit_date.value = formatDate(value)
+            show2.value = false
+            show.value = true
+        }
+        const show2 = ref(false)
+        const digit = ref()
+        const company = ref()
+
         return {
             currentRate,
             images,
@@ -74,14 +91,21 @@ app.component('CounterOne0', defineComponent({
             record,
             submit,
             rds,
+            show2,
+            shi_duan,
+            digit,
+            company,
         };
     },
     mounted() {
         this.$refs.collapse.toggleAll(true);
     },
     template: `<div class="te">
+<van-calendar v-model:show="show2" :show-confirm="false" @confirm="shi_duan"/>
 <van-action-sheet v-model:show="show" title="选择时段">
   <div class="content">
+  <van-field v-model="company"  disabled label="单位" placeholder="请输入要预约的单位" />
+  <van-field v-model="digit" type="digit" label="人数" placeholder="请输入要预约的人数" />
   <van-radio-group v-model="checked">
   <van-cell-group inset>
     <van-cell v-for="rd in rds" :title="rd.fields.start_time+'至'+rd.fields.end_time"  clickable @click="checked = rd.pk">
@@ -121,18 +145,36 @@ app.component('CounterOne1', {
 <div class="van-doc-demo-block">
   <div class="van-doc-demo-block__title">已经预约</div>
   <div class="van-doc-demo-block__card">
-    <van-cell v-for="re in record" :name="re.reserve__pk" is-link :title="re.reserve__event" @click="cat_record(re.pk)" />
-        <van-dialog v-if="info" cancel-text="取消更改" v-model:show="show" title="详细" show-cancel-button>
-          <div style="margin: 20px"><h5>预约事件：{{info.reserve__event}} </h5></div>
+    <van-cell v-for="re in myrecord" :name="re.pk" is-link :title="re.openness__reserve__event" @click="cat_record(re.pk)" />
+        <van-dialog v-if="info" confirmButtonText="取消预约" @confirm="handleConfirm(info.pk)" v-model:show="show" title="详细" show-cancel-button>
+          <div style="margin: 20px"><h5>预约事件：{{info.openness__reserve__event}} </h5></div>
           <div  class="van-doc-demo-block__title">预约人：{{ info.user__name }}</div>
           <p style="margin: 20px">电话：{{info.user__telephone_number}}</p>
-          <p style="margin: 20px">时间：{{ info.submit }}</p>
+          <p style="margin: 20px">预约的时段：{{ info.openness__start_time }}至{{ info.openness__end_time }}</p>
+          <p style="margin: 20px">预约日期：{{ info.submit_date }}</p>
           <van-tag round type="primary" style="margin: 20px">公司：{{ info.user__company }}</van-tag>
+          <van-tag round type="primary" style="margin: 20px">人数：{{ info.count_person }}</van-tag>
+          <div><van-tag v-if="info.status==true" round type="danger" style="margin: 20px">已经取消预约</van-tag></div>
         </van-dialog>
   </div>
 </div>
     `,
     setup() {
+        const handleConfirm = (index) => {
+            axios({
+                method: 'put',
+                url: '/get_record/',
+                headers: {'X-CSRFToken': csrftoken},
+                data: index
+            }).then(res => {
+                vant.showDialog({
+                    message: res.data.mgs,
+                    theme: 'round-button',
+                }).then(() => {
+                    // on close
+                });
+            });
+        }
         const show = ref(false);
         const cat_record = (index) => {
             show.value = true
@@ -144,11 +186,12 @@ app.component('CounterOne1', {
             }).then(res => {
                 console.log(res.data.info)
                 info.value = res.data.info[0]
+
             });
         }
         const info = ref()
         return {
-            show, record, cat_record, info
+            show, myrecord, cat_record, info, handleConfirm
         }
     }
 })
